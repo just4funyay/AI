@@ -1,2 +1,4 @@
 # AI
-tugas
+Tugas AI
+untuk memulai diperlukan install library pygame
+
