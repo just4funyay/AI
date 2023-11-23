@@ -1,7 +1,7 @@
 # main.py
 import pygame, sys
 from maze import Maze
-from player import Player
+from player import Player,Enemy
 from game import Game
 from clock import Clock
 
@@ -25,14 +25,17 @@ class Main():
         self.screen.blit(instructions2,(610,331))
         self.screen.blit(instructions3,(630,362))
 
-    def _draw(self, maze, tile, player, game, clock):
+    def _draw(self, maze, tile, player, game, clock,enemy):
         # draw maze
         [cell.draw(self.screen, tile) for cell in maze.grid_cells]
         # add a goal point to reach
         game.add_goal_point(self.screen)
         # draw every player movement
         player.draw(self.screen)
+        enemy.draw(self.screen)
         player.update(self.screen)
+        enemy.move()
+
         # instructions, clock, winning message
         self.instructions()
         if self.game_over:
@@ -49,6 +52,7 @@ class Main():
         maze = Maze(cols, rows)
         game = Game(maze.grid_cells[-1], tile)
         player = Player(tile // 3, tile // 3)
+        enemy = Enemy(400,tile // 3)
         clock = Clock()
         maze.generate_maze()
         clock.start_timer()
@@ -89,7 +93,9 @@ class Main():
                 player.right_pressed = False
                 player.up_pressed = False
                 player.down_pressed = False
-            self._draw(maze, tile, player, game, clock)
+            self._draw(maze, tile, player, game, clock, enemy)
+            enemy.check_move(tile, maze.grid_cells, maze.thickness)
+            
             self.FPS.tick(60)
 
 if __name__ == "__main__":
@@ -97,7 +103,7 @@ if __name__ == "__main__":
     screen = (window_size[0] + 150, window_size[-1])
     tile_size = 30
     screen = pygame.display.set_mode(screen)
-    pygame.display.set_caption("Maze")
+    pygame.display.set_caption("Demo")
 
     game = Main(screen)
     game.main(window_size, tile_size)
