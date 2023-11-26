@@ -15,6 +15,7 @@ class Main():
         self.message_color = pygame.Color("cyan")
         self.running = True
         self.game_over = False
+        self.lose = False
         self.FPS = pygame.time.Clock()
 
     def instructions(self):
@@ -38,9 +39,12 @@ class Main():
 
         # instructions, clock, winning message
         self.instructions()
-        if self.game_over:
+        if self.game_over and self.lose:
             clock.stop_timer()
             self.screen.blit(game.message(),(610,120))
+        if self.lose:
+            clock.stop_timer()
+            self.screen.blit(game.lose(player,enemy),(610,120))
         else:
             clock.update_timer()
         self.screen.blit(clock.display_timer(), (625,200))
@@ -93,6 +97,21 @@ class Main():
                 player.right_pressed = False
                 player.up_pressed = False
                 player.down_pressed = False
+                enemy.left_pressed = False
+                enemy.right_pressed = False
+                enemy.up_pressed = False
+                enemy.down_pressed = False
+            if game.lose(player,enemy):
+                self.lose = True
+                player.left_pressed = False
+                player.right_pressed = False
+                player.up_pressed = False
+                player.down_pressed = False
+                enemy.left_pressed = False
+                enemy.right_pressed = False
+                enemy.up_pressed = False
+                enemy.down_pressed = False
+
             self._draw(maze, tile, player, game, clock, enemy)
             enemy.check_move(tile, maze.grid_cells, maze.thickness)
             

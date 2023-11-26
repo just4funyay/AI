@@ -25,3 +25,8 @@ class Game:
             return True
         else:
             return False
+        
+    def lose(self, player, enemy):
+        if player.x == enemy.x and enemy.y == player.y:
+            msg = self.font.render('You Lose', True, self.message_color)
+            return msg

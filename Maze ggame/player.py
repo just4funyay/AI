@@ -121,23 +121,55 @@ class Enemy:
         if self.left_pressed:
             if current_cell.walls['left']:
                 if self.x <= current_cell_abs_x + thickness:
-                    self.up_pressed = True
+                    self.down_pressed = True
                     self.left_pressed = False
+                    if current_cell.walls['top']:
+                        if self.y <= current_cell_abs_y + thickness:
+                            self.down_pressed = True
+                            self.up_pressed = False
+                    if current_cell.walls['bottom']:
+                        if self.y >= current_cell_abs_y + tile - (self.height + thickness):
+                            self.up_pressed = True
+                            self.down_pressed = False
         if self.right_pressed:
             if current_cell.walls['right']:
                 if self.x >= current_cell_abs_x + tile - (self.width + thickness):
-                    self.down_pressed = True
+                    self.up_pressed = True
                     self.right_pressed = False
+                    if current_cell.walls['top']:
+                        if self.y <= current_cell_abs_y + thickness:
+                            self.down_pressed = True
+                            self.up_pressed = False
+                    if current_cell.walls['bottom']:
+                        if self.y >= current_cell_abs_y + tile - (self.height + thickness):
+                            self.up_pressed = True
+                            self.down_pressed = False
         if self.up_pressed:
             if current_cell.walls['top']:
                 if self.y <= current_cell_abs_y + thickness:
                     self.right_pressed = True
                     self.up_pressed = False
+                    if current_cell.walls['left']:
+                        if self.x <= current_cell_abs_x + thickness:
+                            self.right_pressed = True
+                            self.up_pressed = False
+                    if current_cell.walls['right']:
+                        if self.x >= current_cell_abs_x + tile - (self.width + thickness):
+                            self.left_pressed = True
+                            self.right_pressed = False        
         if self.down_pressed:
             if current_cell.walls['bottom']:
                 if self.y >= current_cell_abs_y + tile - (self.height + thickness):
                     self.left_pressed = True
                     self.down_pressed = False
+                    if current_cell.walls['left']:
+                        if self.x <= current_cell_abs_x + thickness:
+                            self.right_pressed = True
+                            self.left_pressed = False
+                    if current_cell.walls['right']:
+                        if self.x >= current_cell_abs_x + tile - (self.width + thickness):
+                            self.left_pressed = True
+                            self.right_pressed = False
     def move(self):
         self.velX = 0
         self.velY = 0
